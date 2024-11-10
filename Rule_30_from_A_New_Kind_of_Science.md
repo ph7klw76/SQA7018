@@ -157,6 +157,8 @@ Theoretical Importance: Wolfram used Rule 30 and similar cellular automata to ex
 
 Rule 30 serves as a powerful example of how simple, deterministic rules can produce complex and seemingly chaotic behavior. Whether viewed as a mathematical curiosity, a tool for studying complex systems, or a source of randomness, Rule 30 captures the essence of emergent complexity—a theme that continues to fascinate scientists, mathematicians, and computer scientists alike. 
 
+## Advanced Stuff Beware
+
 A more rigorious code to implement such and animate it is as below
 
 
@@ -231,6 +233,8 @@ plot_automaton(automaton)
 ani = animate_automaton(automaton)
 plt.show()
 ```
+
+## Very advanced stuff. Beware
 
 One of the use of such method is to simulate the spread as disease as shown below
 
