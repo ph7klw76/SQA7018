@@ -232,5 +232,192 @@ ani = animate_automaton(automaton)
 plt.show()
 ```
 
+One of the use of such method is to simulate the spread as disease as shown below
+
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import matplotlib.patches as mpatches
+
+SUSCEPTIBLE, INFECTED, RECOVERED, IMMUNE, ASYMPTOMATIC, VACCINATED = 0, 1, 2, 3, 4, 5
+POROUS, SEMI_POROUS, NON_POROUS = 0, 1, 2  # Boundary types
+
+def initialize_population(grid_size, p_infected=0.01, p_asymptomatic=0.01, p_vaccinated=0.0, density=0.5):
+    """Initialize the 2D population grid with susceptible, vaccinated, infected, and asymptomatic individuals based on density."""
+    grid = np.full(grid_size, -1, dtype=int)  # -1 indicates an unoccupied cell
+    num_individuals = int(grid_size[0] * grid_size[1] * density)
+    positions = np.random.choice(grid_size[0] * grid_size[1], size=num_individuals, replace=False)
+    x_indices = positions // grid_size[1]
+    y_indices = positions % grid_size[1]
+    grid[x_indices, y_indices] = SUSCEPTIBLE
+
+    infected_indices = np.random.choice([False, True], size=num_individuals, p=[1-p_infected, p_infected])
+    asymptomatic_indices = np.random.choice([False, True], size=num_individuals, p=[1-p_asymptomatic, p_asymptomatic])
+    vaccinated_indices = np.random.choice([False, True], size=num_individuals, p=[1-p_vaccinated, p_vaccinated])
+
+    grid[x_indices[infected_indices], y_indices[infected_indices]] = INFECTED
+    grid[x_indices[asymptomatic_indices], y_indices[asymptomatic_indices]] = ASYMPTOMATIC
+    grid[x_indices[vaccinated_indices], y_indices[vaccinated_indices]] = VACCINATED
+
+    return grid
+
+def get_neighbors(grid, x, y):
+    """Get the list of neighbors for the cell (x, y) in the grid."""
+    neighbors = []
+    for dx in [-1, 0, 1]:
+        for dy in [-1, 0, 1]:
+            if dx == 0 and dy == 0:
+                continue
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < grid.shape[0] and 0 <= ny < grid.shape[1]:
+                neighbors.append(grid[nx, ny])
+    return neighbors
+
+def is_movement_allowed(x, y, new_x, new_y, boundary_map):
+    """Check if movement is allowed based on boundary type."""
+    # Ensure indices are within the boundary map limits
+    if 0 <= min(x, new_x) < boundary_map.shape[0] and 0 <= min(y, new_y) < boundary_map.shape[1]:
+        boundary_type = boundary_map[min(x, new_x), min(y, new_y)]
+        if boundary_type == NON_POROUS:
+            return False
+        elif boundary_type == SEMI_POROUS:
+            return np.random.rand() < 0.5  # 50% chance of crossing
+    return True  # Porous boundary allows movement
+
+
+def update_population(grid, infection_prob=0.2, recovery_time=5, immunity_time=10, vaccination_prob=0.01, generation=0, vaccination_start=20):
+    """Update the 2D population grid according to the disease spread rules and vaccination rollout."""
+    new_grid = np.copy(grid)
+    for x in range(grid.shape[0]):
+        for y in range(grid.shape[1]):
+            if grid[x, y] in (INFECTED, ASYMPTOMATIC):
+                # Recover with a certain probability
+                if np.random.rand() < 1/recovery_time:
+                    new_grid[x, y] = RECOVERED
+            elif grid[x, y] == RECOVERED:
+                # Gain immunity with a certain probability
+                if np.random.rand() < 1/immunity_time:
+                    new_grid[x, y] = IMMUNE
+            elif grid[x, y] == SUSCEPTIBLE:
+                # Vaccination rollout starts after a certain number of generations
+                if generation >= vaccination_start and np.random.rand() < vaccination_prob:
+                    new_grid[x, y] = VACCINATED
+                else:
+                    # Check for infection from neighbors
+                    neighbors = get_neighbors(grid, x, y)
+                    if any(neighbor in (INFECTED, ASYMPTOMATIC) for neighbor in neighbors):
+                        if np.random.rand() < infection_prob:
+                            new_grid[x, y] = INFECTED if np.random.rand() > 0.5 else ASYMPTOMATIC
+            elif grid[x, y] == VACCINATED:
+                # Vaccinated individuals have a lower chance of becoming infected (simulating vaccine effectiveness)
+                neighbors = get_neighbors(grid, x, y)
+                if any(neighbor in (INFECTED, ASYMPTOMATIC) for neighbor in neighbors):
+                    if np.random.rand() < infection_prob * 0.1:  # Reduced infection probability for vaccinated individuals
+                        new_grid[x, y] = INFECTED if np.random.rand() > 0.5 else ASYMPTOMATIC
+    return new_grid
+
+def move_individuals(grid, boundary_map, move_prob=0.1):
+    """Randomly move individuals within the grid while considering boundaries."""
+    new_grid = np.copy(grid)
+    for x in range(grid.shape[0]):
+        for y in range(grid.shape[1]):
+            if grid[x, y] != -1 and np.random.rand() < move_prob:  # Only move occupied cells
+                new_x = x + np.random.choice([-1, 0, 1])
+                new_y = y + np.random.choice([-1, 0, 1])
+                if 0 <= new_x < grid.shape[0] and 0 <= new_y < grid.shape[1]:
+                    if is_movement_allowed(x, y, new_x, new_y, boundary_map):
+                        new_grid[x, y], new_grid[new_x, new_y] = new_grid[new_x, new_y], new_grid[x, y]
+    return new_grid
+
+def generate_population(grid_size, generations, p_infected=0.01, p_asymptomatic=0.01, p_vaccinated=0.0, infection_prob=0.2, recovery_time=5, immunity_time=10, move_prob=0.1, vaccination_prob=0.01, vaccination_start=20, density=0.5, boundary_map=None):
+    """Generate the disease spread for a given number of generations."""
+    grid = initialize_population(grid_size, p_infected, p_asymptomatic, p_vaccinated, density)
+    population = [grid]
+    for gen in range(generations - 1):
+        grid = update_population(grid, infection_prob, recovery_time, immunity_time, vaccination_prob, generation=gen, vaccination_start=vaccination_start)
+        grid = move_individuals(grid, boundary_map, move_prob)
+        population.append(grid)
+    return np.array(population)
+
+def plot_population(population, boundary_map):
+    """Plot the disease spread over a 2D grid with boundaries."""
+    fig, ax = plt.subplots(figsize=(10, 10))
+    cmap = plt.get_cmap('viridis', 6)
+    ax.imshow(population[0], cmap=cmap, interpolation='nearest')
+    ax.set_title('Disease Spread Simulation with Geography, Boundaries, Immunity, Movement, Asymptomatic Carriers, and Vaccination')
+    ax.set_xlabel('X Coordinate')
+    ax.set_ylabel('Y Coordinate')
+
+    # Draw boundaries
+    for x in range(boundary_map.shape[0]):
+        for y in range(boundary_map.shape[1]):
+            if boundary_map[x, y] == NON_POROUS:
+                color = 'k'  # Black for non-porous
+                linewidth = 3
+            elif boundary_map[x, y] == SEMI_POROUS:
+                color = 'orange'  # Orange for semi-porous
+                linewidth = 2
+            else:  # POROUS
+                color = 'gray'  # Gray for porous
+                linewidth = 1
+            # Draw boundary lines around the cell
+            ax.plot([y, y + 1], [x, x], color=color, linewidth=linewidth)  # Top border
+            ax.plot([y, y + 1], [x + 1, x + 1], color=color, linewidth=linewidth)  # Bottom border
+            ax.plot([y, y], [x, x + 1], color=color, linewidth=linewidth)  # Left border
+            ax.plot([y + 1, y + 1], [x, x + 1], color=color, linewidth=linewidth)  # Right border
+
+    # Create legend
+    legend_labels = ['Susceptible', 'Infected', 'Recovered', 'Immune', 'Asymptomatic', 'Vaccinated']
+    colors = [cmap(i) for i in range(6)]
+    patches = [mpatches.Patch(color=colors[i], label=legend_labels[i]) for i in range(6)]
+    plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+
+    plt.show()
+
+
+def animate_population(population):
+    """Animate the disease spread over the 2D grid."""
+    fig, ax = plt.subplots(figsize=(10, 10))
+    cmap = plt.get_cmap('viridis', 6)
+    ax.set_title('Disease Spread Simulation with Geography, Boundaries, Immunity, Movement, Asymptomatic Carriers, and Vaccination')
+    ax.set_xlabel('X Coordinate')
+    ax.set_ylabel('Y Coordinate')
+
+    # Create legend
+    legend_labels = ['Susceptible', 'Infected', 'Recovered', 'Immune', 'Asymptomatic', 'Vaccinated']
+    colors = [cmap(i) for i in range(6)]
+    patches = [mpatches.Patch(color=colors[i], label=legend_labels[i]) for i in range(6)]
+    plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+
+    def update(frame):
+        ax.clear()
+        ax.imshow(population[frame], cmap=cmap, interpolation='nearest')
+        ax.set_title('Disease Spread Simulation with Geography, Boundaries, Immunity, Movement, Asymptomatic Carriers, and Vaccination')
+        ax.set_xlabel('X Coordinate')
+        ax.set_ylabel('Y Coordinate')
+        plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+
+    ani = animation.FuncAnimation(fig, update, frames=len(population), repeat=False)
+    return ani
+
+# Parameters
+grid_size = (50, 50)  # Size of the grid (20x20 geographical area)
+generations = 100
+boundary_map = np.random.choice([POROUS, SEMI_POROUS, NON_POROUS], size=(grid_size[0] - 1, grid_size[1] - 1))
+
+# Generate population
+population = generate_population(grid_size, generations, p_vaccinated=0.05, vaccination_prob=0.02, vaccination_start=10, density=0.6, boundary_map=boundary_map)
+
+# Plot population
+plot_population(population, boundary_map)
+
+
+# Animate population
+ani = animate_population(population)
+plt.show()
+```
+
 
 
