@@ -230,7 +230,7 @@ plot_automaton(automaton)
 # Generate and display the animation
 ani = animate_automaton(automaton)
 plt.show()
-```python
+```
 
 
 
