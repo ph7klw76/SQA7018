@@ -234,6 +234,7 @@ plt.show()
 
 One of the use of such method is to simulate the spread as disease as shown below
 
+![image](https://github.com/user-attachments/assets/19ddcd44-300b-47a1-bb58-5c7c27b23b89)
 
 ```python
 import numpy as np
