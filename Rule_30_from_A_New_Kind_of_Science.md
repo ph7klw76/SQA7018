@@ -236,6 +236,14 @@ One of the use of such method is to simulate the spread as disease as shown belo
 
 ![image](https://github.com/user-attachments/assets/19ddcd44-300b-47a1-bb58-5c7c27b23b89)
 
+![image](https://github.com/user-attachments/assets/6a6e3d90-9f37-4f7e-a338-71c297a075eb)
+
+The simulation presented offers a comprehensive model for understanding disease spread by incorporating geographic considerations, population movement dynamics, vaccination strategies, and boundary constraints. It uses a 2D grid to represent a geographical area, where each cell can hold an individual. Individuals exist in various states such as susceptible (healthy but at risk), infected (capable of spreading disease), recovered (with temporary immunity), immune (with long-term immunity), asymptomatic (carriers without symptoms but still contagious), and vaccinated (with partial protection from infection). The boundaries between regions can be porous, semi-porous, or non-porous, influencing how individuals move between areas, thereby simulating the impact of geographical restrictions or policy measures like quarantines and lockdowns.
+
+The simulation starts with an initial state of the population distributed across the grid, and over generations, individuals interact based on probabilities of infection, movement, and vaccination rollout. Movement is influenced by boundaries: porous boundaries allow free movement, semi-porous boundaries allow movement with a 50% probability, and non-porous boundaries do not permit movement at all. Vaccination reduces the susceptibility of individuals, effectively limiting the spread of infection in regions where it is implemented.
+
+The first visualization demonstrates the initial state of the population, where the grid is divided into regions by boundaries. Black lines represent non-porous boundaries, orange lines denote semi-porous boundaries, and gray lines indicate porous boundaries. The distribution of individuals in various states can be observed, with clusters of susceptible, infected, recovered, immune, asymptomatic, and vaccinated individuals. The boundaries clearly influence disease transmission; regions with non-porous boundaries tend to confine the spread of infection, while areas with porous boundaries experience more widespread disease spread due to unrestricted movement.
+
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
