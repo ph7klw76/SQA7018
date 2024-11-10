@@ -1,4 +1,4 @@
-# Exploring Cellular Automat via Rule 30 from "A New Kind of Science"
+# Exploring Cellular Automaton via Rule 30 from "A New Kind of Science"
 
 Stephen Wolfram’s A New Kind of Science presents a thought-provoking study into simple computational rules that lead to complex behaviors. One key aspect of his exploration is the concept of one-dimensional cellular automata. Cellular automata (CA) are computational systems that evolve over discrete time steps, driven by simple, local rules. Despite their simplicity, these systems often exhibit surprisingly rich and complex behaviors.
 
