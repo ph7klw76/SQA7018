@@ -154,10 +154,83 @@ Randomness and Complexity: Despite being a simple deterministic rule, Rule 30 ge
 Simple Rules, Complex Behavior: Rule 30 exemplifies how complex, unpredictable behavior can emerge from simple deterministic rules. This has implications in mathematics, physics, and the study of complex systems.
 Theoretical Importance: Wolfram used Rule 30 and similar cellular automata to explore fundamental questions about computation, determinism, and the nature of complexity.
 
-## Conclusion
+
 Rule 30 serves as a powerful example of how simple, deterministic rules can produce complex and seemingly chaotic behavior. Whether viewed as a mathematical curiosity, a tool for studying complex systems, or a source of randomness, Rule 30 captures the essence of emergent complexity—a theme that continues to fascinate scientists, mathematicians, and computer scientists alike. 
 
+A more rigorious code to implement such and animate it is as below
 
+
+![image](https://github.com/user-attachments/assets/f9ee1d0e-e396-4ee3-90e3-4d0bf6a600b1)
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+
+def rule30(left, center, right):
+    """Apply Rule 30 to determine the next state of a cell."""
+    return left ^ (center | right)
+
+def initialize_grid(size):
+    """Initialize the grid with a single cell in the middle set to 1."""
+    grid = np.zeros(size, dtype=int)
+    grid[size // 2] = 1
+    return grid
+
+def update_grid(grid):
+    """Update the grid according to Rule 30."""
+    new_grid = np.zeros_like(grid)
+    for i in range(1, len(grid) - 1):
+        new_grid[i] = rule30(grid[i - 1], grid[i], grid[i + 1])
+    return new_grid
+
+def generate_automaton(size, generations):
+    """Generate the cellular automaton for a given number of generations."""
+    grid = initialize_grid(size)
+    automaton = [grid]
+    for _ in range(generations - 1):
+        grid = update_grid(grid)
+        automaton.append(grid)
+    return np.array(automaton)
+
+def plot_automaton(automaton):
+    """Plot the cellular automaton."""
+    fig, ax = plt.subplots(figsize=(10, 10))
+    ax.imshow(automaton, cmap='binary', interpolation='nearest')
+    ax.set_title('Cellular Automaton - Rule 30')
+    ax.set_xlabel('Cell Index')
+    ax.set_ylabel('Generation')
+    plt.show()
+
+def animate_automaton(automaton):
+    """Animate the cellular automaton."""
+    fig, ax = plt.subplots(figsize=(10, 10))
+    ax.set_title('Cellular Automaton - Rule 30')
+    ax.set_xlabel('Cell Index')
+    ax.set_ylabel('Generation')
+
+    def update(frame):
+        ax.clear()
+        ax.imshow(automaton[:frame+1], cmap='binary', interpolation='nearest')
+        ax.set_title('Cellular Automaton - Rule 30')
+        ax.set_xlabel('Cell Index')
+        ax.set_ylabel('Generation')
+
+    ani = animation.FuncAnimation(fig, update, frames=len(automaton), repeat=False)
+    return ani
+
+# Parameters
+size = 101  # Size of the grid (number of cells)
+generations = 100  # Number of generations
+
+# Generate and plot the automaton
+automaton = generate_automaton(size, generations)
+plot_automaton(automaton)
+
+# Generate and display the animation
+ani = animate_automaton(automaton)
+plt.show()
+```python
 
 
 
