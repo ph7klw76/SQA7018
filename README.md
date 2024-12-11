@@ -14,7 +14,9 @@ collections of details concepts on the SQA7018  course
 
 ## Applications
 1.[Cellular Automaton](Rule_30_from_A_New_Kind_of_Science.md)
-
 2.[Power Set](power_set.md)
-
-3 [Montle Carlo Magnetism](Magentic_modeling.md)
+3 [Modeling Magnetic Interactions with Monte Carlo Simulations](Magentic_modeling.md)
+4.[Computational Study of the Ising Model via Python Simulation](https://www.linkedin.com/pulse/computational-study-ising-model-via-python-simulation-kai-lin-woon-gcxjc)
+5.[Mean Filed Theory in Magnetism](https://www.linkedin.com/pulse/mean-field-theory-magnetism-kai-lin-woon-o9omc/?trackingId=CMgWb3oEdCAlnjcY6o8zqw%3D%3D)
+6. [Agent-Based Method:Diffusion](https://www.linkedin.com/pulse/visualizing-diffusion-step-by-step-guide-python-kai-lin-woon-s4noc/)
+7.[Agent-Based Method: Bacterial Growth Dynamics in a Nutrient-Rich Environment](https://www.linkedin.com/pulse/simulating-bacterial-growth-dynamics-nutrient-rich-environment-woon-5er5c/)
