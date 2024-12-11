@@ -124,9 +124,9 @@ H = -(hbar**2) / (2 * m) * laplacian
 
 The second derivative of a function $\psi(x)$ is central to many physical problems, including the Schrödinger equation. Using the finite difference method, we approximate the second derivative at a point $x_i$ as:
 
-$$
-\frac{d^2 \psi}{dx^2} \bigg|_{x_i} \approx \frac{\psi_{i-1} - 2\psi_i + \psi_{i+1}}{\Delta x^2}.
-$$
+![image](https://github.com/user-attachments/assets/49e905fe-a2c3-46ab-a403-f28b406424ed)
+
+
 
 ### Here:
 
