@@ -17,4 +17,4 @@ collections of details concepts on the SQA7018  course
 
 2.[Power Set](power_set.md)
 
-3 [Montle Carlo Magnetism](magnetism1.md)
+3 [Montle Carlo Magnetism](Magentic_modeling.md)
