@@ -16,3 +16,5 @@ collections of details concepts on the SQA7018  course
 1.[Cellular Automaton](Rule_30_from_A_New_Kind_of_Science.md)
 
 2.[Power Set](power_set.md)
+
+3 [Montle Carlo Magnetism](magnetism1.md)
