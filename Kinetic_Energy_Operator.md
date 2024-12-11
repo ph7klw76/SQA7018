@@ -43,9 +43,8 @@ To solve the Schrödinger equation numerically, we approximate the second deriva
 
 The second derivative of a function $\psi(x)$ at a grid point $x_i$ can be approximated using the central difference formula:
 
-$$
-\frac{d^2 \psi}{dx^2} \bigg|_{x_i} \approx \frac{\psi_{i-1} - 2\psi_i + \psi_{i+1}}{\Delta x^2},
-$$
+![image](https://github.com/user-attachments/assets/390f3e05-6b31-447d-8dd7-527eb2782a13)
+
 
 where:
 - $\psi_i = \psi(x_i)$: Value of the wavefunction at the $i$-th grid point.
