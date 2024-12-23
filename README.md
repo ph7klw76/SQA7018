@@ -25,6 +25,8 @@ collections of details concepts on the SQA7018  course
 
 6.[Quantum Mechanics-Kinetic Energy Operator](Kinetic_Energy_Operator.md)
 
+7.[Solving London Equation](London_equation.md)
+
 ## CLASS-BASED METHOD
 
 6.[Agent-Based Method:Diffusion](https://www.linkedin.com/pulse/visualizing-diffusion-step-by-step-guide-python-kai-lin-woon-s4noc/)
