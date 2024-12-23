@@ -620,6 +620,7 @@ Both implement the same numerical approximation (central finite differences) to 
 $$
 \nabla^2 B - \frac{1}{\lambda_L^2} B = 0,
 $$
+
 and both yield solutions that match well—given enough iterations in the iterative version or correct setup in the direct version. The choice depends on problem size, available memory, and desired accuracy or speed.
 
 
