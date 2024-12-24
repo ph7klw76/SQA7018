@@ -17,7 +17,7 @@ BITES_NUTRIENT = 100             # How many "bites" a nutrient cell contains.
 DEATH_PROBABILITY = 0.01         # Probability of death after MAX_STEPS.
 REPRODUCE_PROBABILITY = 0.5      # Probability that a bacterium reproduces when it eats.
 MOVE_TOWARD_NUTRIENT_PROB = 0.8  # Probability of bacteria moving toward a nutrient cell.
-MAX_STEPS = 500                  # Maximum steps a bacterium can survive.
+MAX_STEPS = 500                  # Maximum steps a bacterium before Death Probability Initiated
 NUM_SIMULATIONS = 10             # Number of simulations to run for statistical comparison.
 
 # ---------------------------
