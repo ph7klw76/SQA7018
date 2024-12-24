@@ -5,7 +5,6 @@
 import random as rd
 import numpy as np
 import matplotlib.pyplot as plt
-from memory_profiler import profile
 
 # ---------------------------
 # Simulation Parameters
@@ -73,50 +72,70 @@ class Bacterium:
 
     def move_towards_nutrient(self, grid, search_range=2):
         """
-        Attempts to move the bacterium toward a more nutrient-rich cell within a local area.
-        - We look at all cells within +/-search_range in x and y (including diagonals).
-        - Among those, we pick the cell with the highest nutrient, breaking ties by picking
-          the cell that is closer in Manhattan distance (with probability MOVE_TOWARD_NUTRIENT_PROB) 
-          or randomnly
-
-        If no nutrient cells are found in this local region, the bacterium moves randomly.
-
-        Args:
-            grid (np.ndarray): A 2D array storing the nutrient 'bites' at each position.
-            search_range (int): How far (in x and y) to look for nutrient cells.
+        Attempts to move the bacterium exactly one step closer to the most nutrient-rich cell 
+        within the local search area. That one step can be up, down, left, right, or one 
+        diagonal move. We look at all cells within +/-search_range in x and y.
+        
+        Among those cells, we pick the cell with the highest nutrient, 
+        breaking ties by preferring the closer one (Euclidean distance). 
+        If no nutrient cells are found, the bacterium makes a random move.
+        
+        Once we find the best cell (nx, ny), we only move one step closer along 
+        x and/or y, not all the way to (nx, ny).
         """
         neighbors = self.get_neighbors(neighbor=search_range)
         best_move = None
         best_distance = float('inf')
         max_nutrient = 0  # Track the best (highest) nutrient found
-
-        # Examine all nearby cells
+    
+        # Examine all nearby cells in the defined search area
         for dx, dy in neighbors:
             nx = (self.x + dx) % GRID_SIZE
             ny = (self.y + dy) % GRID_SIZE
-
+    
             # Only consider cells with any nutrient
             if grid[nx, ny] > 0:
-                # Manhattan distance to that cell from current position
-                distance = np.sqrt(abs(dx)**2 + abs(dy)**2)
-                
-                # If we find a cell with strictly higher nutrient, prefer it
-                # If nutrients are the same, prefer the closer cell
+                # Euclidean distance from the bacterium to that potential cell
+                distance = (dx**2 + dy**2) ** 0.5
+    
+                # Update best_move if we found higher nutrient or same nutrient but closer
                 if (grid[nx, ny] > max_nutrient) or (
                     grid[nx, ny] == max_nutrient and distance < best_distance
                 ):
                     max_nutrient = grid[nx, ny]
                     best_distance = distance
                     best_move = (nx, ny)
-
-        # Move to the best nutrient cell if found; otherwise, move randomly
+    
+        # If we found a best cell, attempt a 1-step move toward it
         if best_move:
+            # With probability MOVE_TOWARD_NUTRIENT_PROB, move one step toward the best cell.
             if rd.random() < MOVE_TOWARD_NUTRIENT_PROB:
-                self.x, self.y = best_move  # Move to the best nutrient cell
+                target_x, target_y = best_move
+    
+                # Compute the direction in which we need to move
+                step_x = 0
+                step_y = 0
+    
+                if target_x > self.x:
+                    step_x = 1
+                elif target_x < self.x:
+                    step_x = -1
+    
+                if target_y > self.y:
+                    step_y = 1
+                elif target_y < self.y:
+                    step_y = -1
+    
+                # Move exactly one cell in that direction (including diagonals if both step_x and step_y != 0)
+                self.x = (self.x + step_x) % GRID_SIZE
+                self.y = (self.y + step_y) % GRID_SIZE
             else:
+                # Otherwise, do a random move
                 self.random_move()
         else:
+            # No nutrient found in the local area; move randomly
             self.random_move()
+
 
     def move(self, grid):
         """
@@ -226,7 +245,6 @@ def run_simulation():
     return population_history
 
 
-@profile
 def run_multiple_simulations(num_sims):
     """
     Runs the entire simulation multiple times, storing the population history for each run.
@@ -271,4 +289,3 @@ all_sims = run_multiple_simulations(NUM_SIMULATIONS)
 
 # Plot the results to visualize how population changes over time
 plot_results(all_sims)
-
