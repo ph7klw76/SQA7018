@@ -1,3 +1,6 @@
+# ---------------------------
+# IMMEDIATE LOCAL SEARCH
+# ---------------------------
 import random as rd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -137,7 +140,7 @@ def run_simulation():
             if bacterium.check_death():
                 continue  # Bacterium dies, do not add to next iteration
 
-            if grid[bacterium.x, bacterium.y] > 0:  # Check for nutrient
+            if grid[bacterium.x, bacterium.y] > 0:  # Check whether the bacteria is at the nutrient
                 grid[bacterium.x, bacterium.y] -= 1  # Consume nutrient
                 bacterium.reproduce(new_bacteria_list)  # Attempt reproduction
 
