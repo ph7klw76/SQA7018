@@ -1,6 +1,3 @@
-# ---------------------------
-# IMMEDIATE LOCAL SEARCH
-# ---------------------------
 import random as rd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -49,6 +46,7 @@ class Bacterium:
         """
         Attempts to move towards a nutrient-containing neighboring cell.
         If no such cell exists, the bacterium moves randomly.
+        with MOVE_TOWARD_NUTRIENT_PROB probability
         """
         best_move = None  # Stores the best movement towards nutrients
         best_distance = float('inf')  # Minimal distance to nutrient found
@@ -64,21 +62,20 @@ class Bacterium:
                     best_move = (nx, ny)
 
         if best_move:
-            self.x, self.y = best_move  # Move to the best nutrient cell
+            if rd.random() < MOVE_TOWARD_NUTRIENT_PROB:
+                self.x, self.y = best_move  # Move to the best nutrient cell
+            else:
+                self.random_move()
         else:
             self.random_move()  # No nutrient found, move randomly
 
     def move(self, grid):
         """
         Executes a move based on probabilities:
-        - Moves toward nutrient with MOVE_TOWARD_NUTRIENT_PROB probability.
+        - Moves toward nutrient .
         - Otherwise moves randomly.
         """
-        if rd.random() < MOVE_TOWARD_NUTRIENT_PROB:
-            self.move_towards_nutrient(grid)
-        else:
-            self.random_move()
-
+        self.move_towards_nutrient(grid)
         # Increment steps to track survival duration
         self.steps += 1
 
