@@ -77,7 +77,7 @@ class Bacterium:
         # Note: If you want to account for wrapping distances, you would need a
         # different formula, but here we assume direct Manhattan distance.
         distances = [
-            abs(nx - self.x) + abs(ny - self.y)
+            np.sqrt(abs(nx - self.x)**2 + abs(ny - self.y)**2)
             for (nx, ny) in nutrient_positions
         ]
         min_index = np.argmin(distances)
@@ -85,20 +85,23 @@ class Bacterium:
         # This is the absolute closest nutrient cell on the grid
 
         # Step 3: Move one step closer to (target_x, target_y).
+        # (with probability MOVE_TOWARD_NUTRIENT_PROB) or move randomly.
         # We reduce the Manhattan distance by adjusting x or y by 1 in the
         # appropriate direction. We do not move diagonally here.
-
-        if target_x < self.x:
-            self.x -= 1
-        elif target_x > self.x:
-            self.x += 1
-        elif target_y < self.y:
-            self.y -= 1
-        elif target_y > self.y:
-            self.y += 1
+        if rd.random() < MOVE_TOWARD_NUTRIENT_PROB:
+            if target_x < self.x:
+                self.x -= 1
+            elif target_x > self.x:
+                self.x += 1
+            elif target_y < self.y:
+                self.y -= 1
+            elif target_y > self.y:
+                self.y += 1
+            else:
+                # Already at the nutrient cell; no movement needed
+                pass
         else:
-            # Already at the nutrient cell; no movement needed
-            pass
+            self.random_move()
 
         # Apply modulo if you want wrapping behavior
         self.x %= GRID_SIZE
@@ -107,15 +110,10 @@ class Bacterium:
     def move(self, grid):
         """
         Decides whether to attempt moving towards a nutrient cell
-        (with probability MOVE_TOWARD_NUTRIENT_PROB) or move randomly.
-
         Then increments the 'steps' counter to reflect aging.
         """
-        if rd.random() < MOVE_TOWARD_NUTRIENT_PROB:
-            self.move_towards_closest_nutrient(grid)
-        else:
-            self.random_move()
 
+        self.move_towards_closest_nutrient(grid)
         self.steps += 1
 
     def check_death(self):
