@@ -76,7 +76,8 @@ class Bacterium:
         Attempts to move the bacterium toward a more nutrient-rich cell within a local area.
         - We look at all cells within +/-search_range in x and y (including diagonals).
         - Among those, we pick the cell with the highest nutrient, breaking ties by picking
-          the cell that is closer in Manhattan distance.
+          the cell that is closer in Manhattan distance (with probability MOVE_TOWARD_NUTRIENT_PROB) 
+          or randomnly
 
         If no nutrient cells are found in this local region, the bacterium moves randomly.
 
@@ -97,7 +98,7 @@ class Bacterium:
             # Only consider cells with any nutrient
             if grid[nx, ny] > 0:
                 # Manhattan distance to that cell from current position
-                distance = abs(dx) + abs(dy)
+                distance = np.sqrt(abs(dx)**2 + abs(dy)**2)
                 
                 # If we find a cell with strictly higher nutrient, prefer it
                 # If nutrients are the same, prefer the closer cell
@@ -110,23 +111,19 @@ class Bacterium:
 
         # Move to the best nutrient cell if found; otherwise, move randomly
         if best_move:
-            self.x, self.y = best_move
+            if rd.random() < MOVE_TOWARD_NUTRIENT_PROB:
+                self.x, self.y = best_move  # Move to the best nutrient cell
+            else:
+                self.random_move()
         else:
             self.random_move()
 
     def move(self, grid):
         """
         Decides whether to attempt moving towards a nutrient cell 
-        (with probability MOVE_TOWARD_NUTRIENT_PROB) or move randomly.
-
         Then increments the 'steps' counter to reflect aging.
         """
-        if rd.random() < MOVE_TOWARD_NUTRIENT_PROB:
-            # Attempt to move within a local neighborhood of size 'search_range = 2'
-            self.move_towards_nutrient(grid, search_range=2)
-        else:
-            self.random_move()
-
+        self.move_towards_nutrient(grid, search_range=2)
         # Each time the bacterium moves, it has aged by one step
         self.steps += 1
 
@@ -274,3 +271,4 @@ all_sims = run_multiple_simulations(NUM_SIMULATIONS)
 
 # Plot the results to visualize how population changes over time
 plot_results(all_sims)
+
