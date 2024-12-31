@@ -27,6 +27,8 @@ collections of details concepts on the SQA7018  course
 
 7.[Solving London Equation](London_equation.md)
 
+9 [Quantum Vortice in Superconductor](Time-Dependent_Ginzburg-Landau.md)
+
 ## CLASS-BASED METHOD
 
 6.[Agent-Based Method:Diffusion](https://www.linkedin.com/pulse/visualizing-diffusion-step-by-step-guide-python-kai-lin-woon-s4noc/)
