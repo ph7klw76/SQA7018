@@ -240,6 +240,7 @@ if __name__ == "__main__":
 ![image](https://github.com/user-attachments/assets/e9864316-03f1-4ae4-bc35-055771589143)
 ![image](https://github.com/user-attachments/assets/3c9d5dd0-570e-440f-956f-6c8f5e36692d)
 
+![free_particle_simulation](https://github.com/user-attachments/assets/03b601eb-d708-4725-b5c5-ce53e898caed)
 
 
 
