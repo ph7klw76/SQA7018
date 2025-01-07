@@ -34,3 +34,7 @@ collections of details concepts on the SQA7018  course
 6.[Agent-Based Method:Diffusion](https://www.linkedin.com/pulse/visualizing-diffusion-step-by-step-guide-python-kai-lin-woon-s4noc/)
 
 7.[Agent-Based Method: Bacterial Growth Dynamics in a Nutrient-Rich Environment](https://www.linkedin.com/pulse/simulating-bacterial-growth-dynamics-nutrient-rich-environment-woon-5er5c/)
+
+## Minimization
+
+8. [Principle of Least (Stationary) Action](minimum.md)
