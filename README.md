@@ -37,4 +37,4 @@ collections of details concepts on the SQA7018  course
 
 ## Minimization
 
-8. [Principle of Least (Stationary) Action- Advanced](minimum.md)
+8. [Principle of Least (Stationary) Action as applied in quantum mechanics- Advanced](minimum.md)
