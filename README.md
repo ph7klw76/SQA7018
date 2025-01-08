@@ -37,4 +37,8 @@ collections of details concepts on the SQA7018  course
 
 ## Minimization
 
+8.[Principle of least action](least_action.md)
+
+9. [Physics (Principle of least/stationary action) Informed Neural Network] (Physics_informed.md)
+
 8. [Principle of Least (Stationary) Action as applied in quantum mechanics- Advanced](minimum.md)
