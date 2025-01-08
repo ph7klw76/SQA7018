@@ -162,4 +162,4 @@ The PLA’s power lies in its abstraction. Instead of dealing with forces, it fo
 
 ## Conclusion
 
-The Principle of Least Action is a profound framework unifying diverse areas of physics. By recasting physical laws as statements of stationary action, it simplifies derivations, highlights symmetries, and provides a deeper understanding of the universe's workings. Its application across classical mechanics, field theory, quantum mechanics, and even biophysics showcases its unparalleled versatility.
+The Principle of Least Action is a profound framework unifying diverse areas of physics. By recasting physical laws as statements of stationary action, it simplifies derivations, highlights symmetries, and provides a deeper understanding of the universe's workings. Its application across classical mechanics, field theory, quantum mechanics, and even biophysics revealing its unparalleled versatility.
