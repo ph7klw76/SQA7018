@@ -1,4 +1,4 @@
-# Physics-Informed Neural Networks with the Principle of Least (Stationary) Action
+# Principle of Least (Stationary) Action-Informed Neural Networks
 
 ## 1. Introduction
 
