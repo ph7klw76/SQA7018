@@ -42,3 +42,6 @@ collections of details concepts on the SQA7018  course
 9.[Physics (Principle of least/stationary action) Informed Neural Network](Physics_informed.md)
 
 10.[Principle of Least (Stationary) Action as applied in quantum mechanics- Advanced](minimum.md)
+
+## Problem and Solution of real world problem
+
