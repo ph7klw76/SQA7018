@@ -94,7 +94,7 @@ Use a finite‐difference step $h$ (you choose a suitable value) to approximate 
 Compare your result to the drag-free solution and comment on the impact of air resistance.
 
 
-# Finding the Perfect Launch Angle for a Drone Delivery: Newton-Raphson Meets Air Drag
+# Solution
 
 Imagine you are designing a drone-based delivery system. Your task: launch a package from the ground (initial  
 $y=0$) and have it land exactly 200 meters away (also at $y=0$).
