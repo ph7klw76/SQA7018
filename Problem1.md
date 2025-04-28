@@ -31,8 +31,8 @@ for $\theta$ analytically.
 
 $$
 \begin{cases}
-m \frac{dv_x}{dt} = -b \sqrt{v_x^2 + v_y^2} \, v_x \\
-m \frac{dv_y}{dt} = -mg - b \sqrt{v_x^2 + v_y^2} \, v_y
+m \frac{dv_x}{dt} = -b \sqrt{v_x^2 + v_y^2} \ v_x \\
+m \frac{dv_y}{dt} = -mg - b \sqrt{v_x^2 + v_y^2} \ v_y
 \end{cases}
 $$
 
